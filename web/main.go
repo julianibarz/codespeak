@@ -1,49 +1,129 @@
-/**
- * Copyright 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// [START all]
 package main
 
+// https://blog.kowalczyk.info/article/Jl3G/https-for-free-in-go.html
+// To run:
+// go run main.go
+// Command-line options:
+//   -production : enables HTTPS on port 443
+//   -redirect-to-https : redirect HTTP to HTTTPS
+
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+    "context"
+    "crypto/tls"
+    "flag"
+    "fmt"
+    "io"
+    "log"
+    "net/http"
+    "time"
+
+    "golang.org/x/crypto/acme/autocert"
 )
 
-func main() {
-	// use PORT environment variable, or default to 8080
-	port := "443"
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = fromEnv
-	}
+const (
+    htmlIndex = `<html><body>Welcome!</body></html>`
+    httpPort  = "127.0.0.1:8080"
+)
 
-    http.HandleFunc("/", HelloServer)
-    err := http.ListenAndServeTLS(":443", "server.crt", "server.key", nil)
-    if err != nil {
-        log.Fatal("ListenAndServe: ", err)
+var (
+    flgProduction          = true
+    flgRedirectHTTPToHTTPS = true
+)
+
+func handleCodeSpeak(w http.ResponseWriter, r *http.Request) {
+    io.WriteString(w, htmlIndex)
+}
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+    newURI := "https://ai.google/research/people/JulianIbarz"
+    http.Redirect(w, r, newURI, http.StatusFound)
+}
+
+func makeServerFromMux(mux *http.ServeMux) *http.Server {
+    // set timeouts so that a slow or malicious client doesn't
+    // hold resources forever
+    return &http.Server{
+        ReadTimeout:  5 * time.Second,
+        WriteTimeout: 5 * time.Second,
+        IdleTimeout:  120 * time.Second,
+        Handler:      mux,
     }
 }
 
-// hello responds to the request with a plain-text "Hello, world" message.
-func hello(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Serving request: %s", r.URL.Path)
-	host, _ := os.Hostname()
-	fmt.Fprintf(w, "Hello, world!\n")
-	fmt.Fprintf(w, "Version: 1.0.0\n")
-	fmt.Fprintf(w, "Hostname: %s\n", host)
+func makeHTTPServer() *http.Server {
+    mux := &http.ServeMux{}
+    mux.HandleFunc("/", handleIndex)
+    mux.HandleFunc("/codespeak", handleCodeSpeak)
+    return makeServerFromMux(mux)
+
 }
-// [END all]
+
+func makeHTTPToHTTPSRedirectServer() *http.Server {
+    handleRedirect := func(w http.ResponseWriter, r *http.Request) {
+        newURI := "https://" + r.Host + r.URL.String()
+        http.Redirect(w, r, newURI, http.StatusFound)
+    }
+    mux := &http.ServeMux{}
+    mux.HandleFunc("/", handleRedirect)
+    return makeServerFromMux(mux)
+}
+
+func parseFlags() {
+    flag.BoolVar(&flgProduction, "production", true, "if true, we start HTTPS server")
+    flag.BoolVar(&flgRedirectHTTPToHTTPS, "redirect-to-https", true, "if true, we redirect HTTP to HTTPS")
+    flag.Parse()
+}
+
+func main() {
+    parseFlags()
+    var m *autocert.Manager
+
+    var httpsSrv *http.Server
+    if flgProduction {
+        hostPolicy := func(ctx context.Context, host string) error {
+            // Note: change to your real host
+            allowedHost := "julianibarz.com"
+            if host == allowedHost {
+                return nil
+            }
+            return fmt.Errorf("acme/autocert: only %s host is allowed", allowedHost)
+        }
+
+        dataDir := "."
+        m = &autocert.Manager{
+            Prompt:     autocert.AcceptTOS,
+            HostPolicy: hostPolicy,
+            Cache:      autocert.DirCache(dataDir),
+        }
+
+        httpsSrv = makeHTTPServer()
+        httpsSrv.Addr = ":443"
+        httpsSrv.TLSConfig = &tls.Config{GetCertificate: m.GetCertificate}
+
+        go func() {
+            fmt.Printf("Starting HTTPS server on %s\n", httpsSrv.Addr)
+            err := httpsSrv.ListenAndServeTLS("", "")
+            if err != nil {
+                log.Fatalf("httpsSrv.ListendAndServeTLS() failed with %s", err)
+            }
+        }()
+    }
+
+    var httpSrv *http.Server
+    if flgRedirectHTTPToHTTPS {
+        httpSrv = makeHTTPToHTTPSRedirectServer()
+    } else {
+        httpSrv = makeHTTPServer()
+    }
+    // allow autocert handle Let's Encrypt callbacks over http
+    if m != nil {
+        httpSrv.Handler = m.HTTPHandler(httpSrv.Handler)
+    }
+
+    httpSrv.Addr = httpPort
+    fmt.Printf("Starting HTTP server on %s\n", httpPort)
+    err := httpSrv.ListenAndServe()
+    if err != nil {
+        log.Fatalf("httpSrv.ListenAndServe() failed with %s", err)
+    }
+}

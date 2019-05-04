@@ -19,4 +19,4 @@ spec:
       - name: hello-app
         image: gcr.io/google-samples/hello-app:1.0
         ports:
-        - containerPort: 8080
+        - containerPort: 8443

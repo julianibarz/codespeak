@@ -9,7 +9,7 @@ spec:
     app: hello
     tier: web
   ports:
-  - port: 80
-    targetPort: 8080
+  - port: 443
+    targetPort: 8443
   type: LoadBalancer
   loadBalancerIP: "YOUR.IP.ADDRESS.HERE"

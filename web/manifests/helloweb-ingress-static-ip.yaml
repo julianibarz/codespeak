@@ -9,7 +9,7 @@ metadata:
 spec:
   backend:
     serviceName: helloweb-backend
-    servicePort: 8080
+    servicePort: 8443
 ---
 apiVersion: v1
 kind: Service
@@ -23,5 +23,5 @@ spec:
     app: hello
     tier: web
   ports:
-  - port: 8080
-    targetPort: 8080
+  - port: 8443
+    targetPort: 8443
