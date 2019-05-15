@@ -19,7 +19,7 @@
   "author": "Google Inc.",
   "license": "Apache-2.0",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^3.2.0"

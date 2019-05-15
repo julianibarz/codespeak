@@ -19,8 +19,12 @@
 const express = require('express');
 const app = express();
 
+app.get('/codespeak', (req, res) => {
+  res.send('This is the url where I will put my CodeSpeak demo!');
+});
+
 app.get('/', (req, res) => {
-  res.send('Hello from App Engine!');
+  res.redirect('https://ai.google/research/people/JulianIbarz');
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
