@@ -23,6 +23,7 @@ const staticFile = require('connect-static-file');
 
 app.use('/xterm', express.static(path.join(__dirname, "/node_modules/xterm/dist/")));
 app.use('/codespeak.js', staticFile(__dirname + '/codespeak.js'));
+app.use('/index.css', staticFile(__dirname + '/index.css'));
 
 app.get('/', (req, res) => {
   res.sendFile('/index.html' , { root : __dirname});

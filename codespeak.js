@@ -1,6 +1,8 @@
 $(function () {
-var term = new Terminal();
+Terminal.applyAddon(fit);
+var term = new Terminal({cursorBlink: true, rows: 40});
 term.open(document.getElementById('terminal'));
+term.fit();
 
 function upgrade() {
   $(document.body).empty();
@@ -42,6 +44,11 @@ if (!('webkitSpeechRecognition' in window)) {
   };
   recognizing = false;
 }
+
+$(window).resize(function() {
+  console.log('resize');  
+  term.fit();
+});
 
 $( "#speak" ).click(function() {
   if (!recognizing) {
