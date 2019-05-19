@@ -18,9 +18,12 @@
 // [START app]
 const express = require('express');
 const app = express();
+const path = require('path');
+
+app.use('/xterm', express.static(path.join(__dirname, "/node_modules/xterm/dist/")));
 
 app.get('/', (req, res) => {
-  res.send('Welcome on CodeSpeak demo!');
+  res.sendFile('/index.html' , { root : __dirname});
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
