@@ -1,0 +1,10 @@
+html, body {
+  height: 100%;
+}
+
+#interim_p {
+ position: fixed;
+ bottom: 0;
+ width: 100%;
+ align: center;
+}
