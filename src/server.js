@@ -19,14 +19,17 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fs = require('fs');
 const staticFile = require('connect-static-file');
 
-app.use('/xterm', express.static(path.join(__dirname, "/node_modules/xterm/dist/")));
-app.use('/codespeak.js', staticFile(__dirname + '/codespeak.js'));
-app.use('/index.css', staticFile(__dirname + '/index.css'));
+const ASSET_DIR = '..';
+
+app.use('/xterm', express.static(path.join(__dirname, ASSET_DIR, "node_modules/xterm/dist/")));
+app.use('/codespeak.js', staticFile(__dirname + ASSET_DIR + '/codespeak.js'));
+app.use('/index.css', staticFile(__dirname + ASSET_DIR + '/index.css'));
 
 app.get('/', (req, res) => {
-  res.sendFile('/index.html' , { root : __dirname});
+  res.sendFile(ASSET_DIR + '/index.html' , { root : __dirname});
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise

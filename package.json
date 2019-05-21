@@ -3,9 +3,15 @@
   "version": "0.0.1",
   "description": "Node.js getting started sample for building an app on App Engine standard environment.",
   "private": true,
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node server.js",
+    "dev:fe": "webpack --mode development --config webpack.frontend.config.js",
+    "build:fe": "webpack --mode production --config webpack.frontend.config.js",
+    "dev:be": "webpack --mode development --config webpack.backend.config.js",
+    "build:be": "webpack --mode production --config webpack.backend.config.js",
+    "dev": "npm run dev:fe; npm run dev:be",
+    "build": "npm run build:fe; npm run build:be",
+    "start": "node build/server-bundle.js",
     "deploy": "gcloud app deploy",
     "test": "repo-tools test app"
   },
@@ -16,7 +22,7 @@
   "engines": {
     "node": ">=8"
   },
-  "author": "Google Inc.",
+  "author": "Julian Ibarz",
   "license": "Apache-2.0",
   "dependencies": {
     "connect-static-file": "^2.0.0",
@@ -25,7 +31,11 @@
     "xterm": "^3.13.1"
   },
   "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^3.2.0"
+    "@google-cloud/nodejs-repo-tools": "^3.2.0",
+    "webpack": "^4.32.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1",
+    "webpack-node-externals": "^1.7.2"
   },
   "cloud-repo-tools": {
     "requiresKeyFile": false,
