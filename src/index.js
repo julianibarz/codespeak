@@ -1,8 +1,11 @@
+import './index.css';
+import 'xterm/dist/xterm.css'
+import {Terminal} from 'xterm';
+
 $(function () {
-Terminal.applyAddon(fit);
 var term = new Terminal({cursorBlink: true, rows: 40});
 term.open(document.getElementById('terminal'));
-term.fit();
+var recognizing = false;
 
 $('#g-signin').on('data-onsuccess', function(googleUser) {
   var profile = googleUser.getBasicProfile();
@@ -26,21 +29,20 @@ if (!('webkitSpeechRecognition' in window)) {
   var recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = true;
-  recognition.onresult = function() {
-    results = event.results
-    CONFIDENT = 0.9
+  recognition.onresult = function(event) {
+    var results = event.results
     if (typeof(results) === 'undefined') { //Something is wrong…
         recognition.stop();
         return;
     }
-     transcript = '';
-     isFinal = true;
+     var transcript = '';
+     var isFinal = true;
      for (var i = event.resultIndex; i < event.results.length; ++i) {
-       result = results[i];
+       var result = results[i];
        if (!result.isFinal) {
          isFinal = false;
        }
-       result_transcript = result[0].transcript;
+       var result_transcript = result[0].transcript;
        transcript += result_transcript;
      }
      if (isFinal) {
@@ -50,13 +52,7 @@ if (!('webkitSpeechRecognition' in window)) {
        interim_p.textContent = transcript;
      }
   };
-  recognizing = false;
 }
-
-$(window).resize(function() {
-  console.log('resize');  
-  term.fit();
-});
 
 $( "#speak" ).click(function() {
   if (!recognizing) {

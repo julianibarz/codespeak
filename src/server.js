@@ -22,14 +22,10 @@ const path = require('path');
 const fs = require('fs');
 const staticFile = require('connect-static-file');
 
-const ASSET_DIR = '..';
-
-app.use('/xterm', express.static(path.join(__dirname, ASSET_DIR, "node_modules/xterm/dist/")));
-app.use('/codespeak.js', staticFile(__dirname + ASSET_DIR + '/codespeak.js'));
-app.use('/index.css', staticFile(__dirname + ASSET_DIR + '/index.css'));
+app.use('/index-bundle.js', staticFile(__dirname + './index-bundle.js'));
 
 app.get('/', (req, res) => {
-  res.sendFile(ASSET_DIR + '/index.html' , { root : __dirname});
+  res.sendFile('./index.html' , { root : __dirname});
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
