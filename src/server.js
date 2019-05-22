@@ -23,6 +23,7 @@ const fs = require('fs');
 const staticFile = require('connect-static-file');
 
 app.use('/index-bundle.js', staticFile(__dirname + './index-bundle.js'));
+app.use('/styles.css', staticFile(__dirname + './styles.css'));
 
 app.get('/', (req, res) => {
   res.sendFile('./index.html' , { root : __dirname});

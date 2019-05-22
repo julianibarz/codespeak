@@ -31,7 +31,7 @@ module.exports = {
   devtool: 'inline-source-map',
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'index.css',
+      filename: './styles.css',
     }),
     new CopyPlugin([
       { from: './src/index.html', to: './index.html' },
