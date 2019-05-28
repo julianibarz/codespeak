@@ -11,7 +11,6 @@
     "build:be": "webpack --mode production --config webpack.backend.config.js",
     "dev": "npm run dev:fe; npm run dev:be",
     "build": "npm run build:fe; npm run build:be",
-    "prestart": "npm run build",
     "start": "webpack-dev-server --config webpack.backend.config.js --port $PORT",
     "deploy": "gcloud app deploy",
     "test": "repo-tools test app"

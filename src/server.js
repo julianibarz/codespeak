@@ -18,19 +18,11 @@
 // [START app]
 const express = require('express');
 const app = express();
-const path = require('path');
-const fs = require('fs');
 const staticFile = require('connect-static-file');
-require('@google-cloud/debug-agent').start();
 
 app.use('/index-bundle.js', staticFile(__dirname + './index-bundle.js'));
 app.use('/styles.css', staticFile(__dirname + './styles.css'));
-
-app.get('/', (req, res) => {
-  res.sendFile('./index.html', {
-    root: __dirname
-  });
-});
+app.use('/', staticFile(__dirname + './index.html'));
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
