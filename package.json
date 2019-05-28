@@ -1,9 +1,9 @@
 {
-  "name": "appengine-standard-getting-started-build-apps",
-  "version": "0.0.1",
+  "name": "codespeak",
+  "version": "0.0.2",
   "description": "Node.js getting started sample for building an app on App Engine standard environment.",
   "private": true,
-  "main": "dist/server.js",
+  "main": "dist/server-bundle.js",
   "scripts": {
     "dev:fe": "webpack --mode development --config webpack.frontend.config.js",
     "build:fe": "webpack --mode production --config webpack.frontend.config.js",
@@ -11,7 +11,8 @@
     "build:be": "webpack --mode production --config webpack.backend.config.js",
     "dev": "npm run dev:fe; npm run dev:be",
     "build": "npm run build:fe; npm run build:be",
-    "start": "webpack-dev-server --port 3000 --config webpack.frontend.config.js",
+    "prestart": "npm run build",
+    "start": "webpack-dev-server --config webpack.backend.config.js --port $PORT",
     "deploy": "gcloud app deploy",
     "test": "repo-tools test app"
   },
@@ -27,27 +28,26 @@
   "dependencies": {
     "connect-static-file": "^2.0.0",
     "express": "^4.16.4",
-    "path": "^0.12.7",
-    "xterm": "^3.13.1"
-  },
-  "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^3.2.0",
+    "path": "^0.12.7",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1",
+    "xterm": "^3.13.1",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
     "mini-css-extract-plugin": "^0.6.0",
     "style-loader": "^0.23.1",
-    "webpack": "^4.28.4",
-    "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1",
     "webpack-node-externals": "^1.7.2"
   },
+  "devDependencies": {},
   "cloud-repo-tools": {
     "requiresKeyFile": false,
     "requiresProjectId": false,
     "test": {
       "app": {
         "args": [
-          "server.js"
+          "dist/server-bundle.js"
         ],
         "msg": "Hello from App Engine!"
       }

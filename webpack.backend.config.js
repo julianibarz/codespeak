@@ -7,8 +7,21 @@ module.exports = {
     app: ['./src/server.js'],
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'server-bundle.js',
+  },
+  devServer: {
+    host: '0.0.0.0', // Required for docker
+    contentBase: [path.resolve(__dirname, "dist")],
+    watchContentBase: true,
+    compress: true,
+    //port: 3000,
+    //public: 'nodejs-julianibarz499561.codeanyapp.com',
+    allowedHosts: [
+      'nodejs-julianibarz499561.codeanyapp.com',
+      'codespeak.julianibarz.com',
+      'codespeak.appspot.com',
+    ],
   },
   externals: [nodeExternals()],
 }

@@ -21,12 +21,15 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const staticFile = require('connect-static-file');
+require('@google-cloud/debug-agent').start();
 
 app.use('/index-bundle.js', staticFile(__dirname + './index-bundle.js'));
 app.use('/styles.css', staticFile(__dirname + './styles.css'));
 
 app.get('/', (req, res) => {
-  res.sendFile('./index.html' , { root : __dirname});
+  res.sendFile('./index.html', {
+    root: __dirname
+  });
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
