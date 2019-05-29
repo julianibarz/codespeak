@@ -11,6 +11,7 @@
     "build:be": "webpack --mode production --config webpack.backend.config.js",
     "watch:fe": "webpack --mode development --config webpack.frontend.config.js --watch",
     "watch:be": "webpack --mode development --config webpack.backend.config.js --watch",
+    "watch": "npm run watch:fe & num run watch:be",
     "dev": "npm run dev:fe; npm run dev:be",
     "build": "npm run build:fe; npm run build:be",
     "server": "webpack-dev-server --config webpack.frontend.config.js --port $PORT",
