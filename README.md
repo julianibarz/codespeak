@@ -21,8 +21,6 @@ As a person who's been struggling with RSI, I thought it may be a fun side-proje
 
 Before you can run or deploy the sample, you need to do the following:
 
-1.  Refer to the [appengine/README.md][readme] file for instructions on
-    running and deploying.
 1.  Install dependencies:
 
         npm install
