@@ -2,7 +2,7 @@
 
 Live version: https://codespeak.julianibarz.com
 
-This is an attempt at having a web-based terminal that is controlled by voice so that you can code
+This is an attempt to have a web-based terminal that is controlled by voice so that you can code
  anywhere (with your tablet, laptop), with your voice, and with just a web browser.
 
 As a person who's been struggling with [RSI](https://www.nhs.uk/conditions/repetitive-strain-injury-rsi/),
@@ -17,6 +17,7 @@ I thought it may be a fun side-project.
 4.  [Google App Engine](https://cloud.google.com/appengine/docs/) for deployment.
 5.  [Web Speech API](https://w3c.github.io/speech-api/) for voice recognition.
 6.  [Google OAuth](https://developers.google.com/identity/sign-in/web/backend-auth) for identity management.
+7.  [Google Cloud Data Store](https://cloud.google.com/datastore/) for NoSQL storage of user data.
 
 ## Setup
 
