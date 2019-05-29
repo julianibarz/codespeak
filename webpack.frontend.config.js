@@ -21,6 +21,17 @@ module.exports = {
          ],
   },
   devtool: 'inline-source-map',
+  devServer: {
+    host: '0.0.0.0', // Required for docker
+    contentBase: [path.resolve(__dirname, "dist")],
+    watchContentBase: true,
+    compress: true,
+    allowedHosts: [
+      'nodejs-julianibarz499561.codeanyapp.com',
+      'codespeak.julianibarz.com',
+      'codespeak.appspot.com',
+    ],
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: './styles.css',

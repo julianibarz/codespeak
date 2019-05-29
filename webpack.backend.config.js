@@ -6,20 +6,14 @@ module.exports = {
   entry: {
     app: ['./src/server.js'],
   },
+  node: {
+    // To make __dirname point to current directory of output file.
+    // See: https://bit.ly/2VVEEov
+    __dirname: false,
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'server-bundle.js',
-  },
-  devServer: {
-    host: '0.0.0.0', // Required for docker
-    contentBase: [path.resolve(__dirname, "dist")],
-    watchContentBase: true,
-    compress: true,
-    allowedHosts: [
-      'nodejs-julianibarz499561.codeanyapp.com',
-      'codespeak.julianibarz.com',
-      'codespeak.appspot.com',
-    ],
   },
   externals: [nodeExternals()],
 }

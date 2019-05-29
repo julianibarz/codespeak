@@ -20,9 +20,20 @@ const express = require('express');
 const app = express();
 const staticFile = require('connect-static-file');
 
-app.use('/index-bundle.js', staticFile(__dirname + './index-bundle.js'));
-app.use('/styles.css', staticFile(__dirname + './styles.css'));
-app.use('/', staticFile(__dirname + './index.html'));
+// Redirect http to https.
+app.enable('trust proxy');
+app.use(function(req, res, next) {
+  if (req.header('x-forwarded-proto') !== 'https' || !req.secure) {
+    res.redirect("https://" + req.headers.host + req.url);
+  } else {
+    return next();
+  }
+});
+
+// Serve static content.
+app.use('/index-bundle.js', staticFile(__dirname + '/index-bundle.js'));
+app.use('/styles.css', staticFile(__dirname + '/styles.css'));
+app.use('/', staticFile(__dirname + '/index.html'));
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;

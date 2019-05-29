@@ -9,9 +9,12 @@
     "build:fe": "webpack --mode production --config webpack.frontend.config.js",
     "dev:be": "webpack --mode development --config webpack.backend.config.js",
     "build:be": "webpack --mode production --config webpack.backend.config.js",
+    "watch:fe": "webpack --mode development --config webpack.frontend.config.js --watch",
+    "watch:be": "webpack --mode development --config webpack.backend.config.js --watch",
     "dev": "npm run dev:fe; npm run dev:be",
     "build": "npm run build:fe; npm run build:be",
-    "start": "webpack-dev-server --config webpack.backend.config.js --port $PORT",
+    "server": "webpack-dev-server --config webpack.frontend.config.js --port $PORT",
+    "start": "node dist/server-bundle.js",
     "deploy": "gcloud app deploy",
     "test": "repo-tools test app"
   },
