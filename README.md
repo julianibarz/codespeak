@@ -67,7 +67,7 @@ Here are the next steps I am hoping to accomplish:
 - **Any Help**: The project is big, feel free to take a thread in the "Next Steps" section above if you're interested in helping
   and I can work on the other ones. I also welcome any PR.
 
-# Contributing
+## Contributing
 
 Feel free to clone, and propose PRs! I'm new to web development so any suggestions for improvements are welcome as well.
 Note that this is really a side-project, and thus I don't guarantee any support for this project. I would consider myself successful
@@ -87,10 +87,3 @@ https://talonvoice.com
 I've also found this blog post to have quite a lot of relevant information:
 
 https://blog.logrocket.com/programming-by-voice-in-2019-3e1855f5add9
-
-## Relevant documentations
-
-[appengine]: https://cloud.google.com/appengine/docs/standard/nodejs
-[tutorial]: https://cloud.google.com/appengine/docs/standard/nodejs/building-app/writing-web-service
-[readme]: ../../README.md
-[contributing]: https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/master/CONTRIBUTING.md
