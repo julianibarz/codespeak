@@ -9,7 +9,6 @@ import {
 $(function() {
   var term = createTerminal();
   var speech = createSpeechRecognition(term);
-  var recognizing = false;
 
   $('#g-signin').on('data-onsuccess', function(googleUser) {
     var profile = googleUser.getBasicProfile();
