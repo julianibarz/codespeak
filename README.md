@@ -43,7 +43,7 @@ all of this is done, you can:
 ## Next Steps
 
 Here are the next steps I am hoping to accomplish:
-1.  **Support signed in Google users**: This will be important to allow users to connect to a VM, etc.
+1.  ~**Support signed in Google users**: This will be important to allow users to connect to a VM, etc.~
 2.  **Store user info**: So that store safely their SSH credential, VM info, etc.
 3.  **Connect terminal to a VM using ssh**: So that we can really code :)
 4.  **Build Restricted Grammar Support**: Only a-z,A-Z,0-9 and special symbols useful for coding would be 

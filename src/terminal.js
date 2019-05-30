@@ -11,9 +11,12 @@ export function createTerminal() {
       term.write('\r\n$ ');
   };
 
-  term.writeln('Welcome to xterm.js');
+  term.writeln('Welcome to CodeSpeak!');
+  term.writeln('');
   term.writeln('This is a local terminal emulation, without a real terminal in the back-end.');
   term.writeln('Type some keys and commands to play around.');
+  term.writeln('');
+  term.writeln('Press the microphone icon on top to speak words directly in the terminal.');
   term.writeln('');
   term.prompt();
 
