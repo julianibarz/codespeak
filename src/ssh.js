@@ -36,7 +36,7 @@ function connectSSH(socket) {
     conn.shell(function(err, stream) {
       if (err)
         return socket.emit('data', '\r\n*** SSH SHELL ERROR: ' + err.message + ' ***\r\n');
-      socket.on('data', function(data) {
+      socket.on('term_data', function(data) {
         stream.write(data);
       });
       stream.on('data', function(d) {

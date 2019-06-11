@@ -1,13 +1,17 @@
 import io from 'socket.io-client';
 
-export function createSocket(term) {
+export function createSocket() {
   var socket = io.connect('https://nodejs-julianibarz499561.codeanyapp.com', {secure: true});
+  return socket;
+}
+
+export function connectSocketToTerminal(socket, term) {
   socket.on('connect', function() {
     term.write('\r\n*** Connected to backend***\r\n');
 
     // Browser -> Backend
     term.on('data', function(data) {
-      socket.emit('data', data);
+      socket.emit('term_data', data);
     });
 
     // Backend -> Browser

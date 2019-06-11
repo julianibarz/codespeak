@@ -3,7 +3,7 @@ import {
   Terminal
 } from 'xterm';
 
-export function createTerminal() {
+export function createTerminal(socket) {
   var term = new Terminal({
     cursorBlink: true,
     rows: 40
@@ -11,7 +11,7 @@ export function createTerminal() {
   term.open(document.getElementById('terminal'));
 
   term.prompt = () => {
-    term.write('\r\n$ ');
+    socket.emit('data', '\r\n$ ');
   };
 
   term.writeln('Welcome to CodeSpeak!');
@@ -31,15 +31,15 @@ export function createTerminal() {
     } else if (ev.keyCode === 8) {
       // Do not delete the prompt
       if (term._core.buffer.x > 2) {
-        term.write('\b \b');
+        socket.emit('data', '\b \b');
       }
     } else if (printable) {
-      term.write(key);
+      socket.emit('data', key);
     }
   });
 
   term.on('paste', function(data) {
-    term.write(data);
+    socket.emit('data', data);
   });
   return term;
 }

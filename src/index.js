@@ -9,12 +9,13 @@ import {
   createAuthentification
 } from './auth.js';
 import {
-  createSocket
+  createSocket, connectSocketToTerminal
 } from './socket.js';
 
 $(function() {
-  var term = createTerminal();
   var speech = createSpeechRecognition(term);
-  var socket = createSocket(term);
+  var socket = createSocket();
+  var term = createTerminal(socket);
   createAuthentification(socket);
+  connectSocketToTerminal(socket, term);
 });
