@@ -50,9 +50,11 @@ function connectSSH(socket) {
   }).on('error', function(err) {
     socket.emit('data', '\r\n*** SSH CONNECTION ERROR: ' + err.message + ' ***\r\n');
   }).connect({
-    host: 'host16.codeanyhost.com',
+    //host: 'host16.codeanyhost.com',
+    //username: 'cabox',
+    //port: 44166,
+    host: 'nodejs',
     username: 'cabox',
-    port: 44166,
     privateKey: require('fs').readFileSync(__dirname + '/id_rsa')
   });
 }
