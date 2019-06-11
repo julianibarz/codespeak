@@ -31,7 +31,8 @@ export function createSpeechRecognition(socket) {
         transcript += result_transcript;
       }
       if (isFinal) {
-        socket.emit('data', transcript);
+        socket.emit('term_data', transcript);
+        console.log('recog: ' + transcript);
         interim_p.textContent = '';
       } else {
         interim_p.textContent = transcript;
