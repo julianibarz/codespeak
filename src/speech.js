@@ -1,5 +1,4 @@
-// term is a Terminal object from xterm.js.
-export function createSpeechRecognition(term) {
+export function createSpeechRecognition(socket) {
   var recognizing = false;
   function upgrade() {
     $(document.body).empty();
@@ -32,7 +31,7 @@ export function createSpeechRecognition(term) {
         transcript += result_transcript;
       }
       if (isFinal) {
-        term.write(transcript);
+        socket.emit('data', transcript);
         interim_p.textContent = '';
       } else {
         interim_p.textContent = transcript;

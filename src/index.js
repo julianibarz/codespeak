@@ -13,8 +13,8 @@ import {
 } from './socket.js';
 
 $(function() {
-  var speech = createSpeechRecognition(term);
   var socket = createSocket();
+  var speech = createSpeechRecognition(socket);
   var term = createTerminal(socket);
   createAuthentification(socket);
   connectSocketToTerminal(socket, term);
