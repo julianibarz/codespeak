@@ -26,7 +26,7 @@ I thought it may be a fun side-project.
 ## Running locally
 
     # Pack all things with webpack.
-    npm dev
+    npm run dev
     # Option #1: Start local nodejs server.
     npm start
     # Option #2: Start webpack-dev-server.

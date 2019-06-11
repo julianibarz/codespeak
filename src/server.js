@@ -19,6 +19,11 @@
 const express = require('express');
 const app = express();
 const staticFile = require('connect-static-file');
+const auth = require('./server_auth.js'); 
+//import {
+//  verifyUser
+//} from './auth.js';
+
 
 // Redirect http to https.
 app.enable('trust proxy');
@@ -29,11 +34,15 @@ app.use(function(req, res, next) {
     return next();
   }
 });
+app.use(express.json());
+
+// Authentification.
+app.post('/verifyUser', function(req, res) { auth.verifyUser(req, res); });
 
 // Serve static content.
-app.use('/index-bundle.js', staticFile(__dirname + '/index-bundle.js'));
-app.use('/styles.css', staticFile(__dirname + '/styles.css'));
-app.use('/', staticFile(__dirname + '/index.html'));
+app.get('/index-bundle.js', staticFile(__dirname + '/index-bundle.js'));
+app.get('/styles.css', staticFile(__dirname + '/styles.css'));
+app.get('/', staticFile(__dirname + '/index.html'));
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;

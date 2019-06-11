@@ -4,11 +4,14 @@ import {
 } from 'xterm';
 
 export function createTerminal() {
-  var term = new Terminal({cursorBlink: true, rows: 40});
+  var term = new Terminal({
+    cursorBlink: true,
+    rows: 40
+  });
   term.open(document.getElementById('terminal'));
 
   term.prompt = () => {
-      term.write('\r\n$ ');
+    term.write('\r\n$ ');
   };
 
   term.writeln('Welcome to CodeSpeak!');
@@ -21,22 +24,22 @@ export function createTerminal() {
   term.prompt();
 
   term.on('key', function(key, ev) {
-      const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey;
+    const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey;
 
-      if (ev.keyCode === 13) {
-          term.prompt();
-      } else if (ev.keyCode === 8) {
-          // Do not delete the prompt
-          if (term._core.buffer.x > 2) {
-              term.write('\b \b');
-          }
-      } else if (printable) {
-          term.write(key);
+    if (ev.keyCode === 13) {
+      term.prompt();
+    } else if (ev.keyCode === 8) {
+      // Do not delete the prompt
+      if (term._core.buffer.x > 2) {
+        term.write('\b \b');
       }
+    } else if (printable) {
+      term.write(key);
+    }
   });
 
   term.on('paste', function(data) {
-      term.write(data);
+    term.write(data);
   });
   return term;
 }
