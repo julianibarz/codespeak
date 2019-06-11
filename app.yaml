@@ -12,7 +12,7 @@
 # limitations under the License.
 
 # [START app_yaml]
-runtime: nodejs
+runtime: nodejs8
 resources:
   memory_gb: 2.3
 # [END app_yaml]

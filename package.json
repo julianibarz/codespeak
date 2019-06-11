@@ -40,6 +40,8 @@
     "mini-css-extract-plugin": "^0.6.0",
     "net": "^1.0.2",
     "path": "^0.12.7",
+    "socket.io": "^2.2.0",
+    "ssh2": "^0.8.4",
     "style-loader": "^0.23.1",
     "tls": "0.0.1",
     "webpack": "^4.28.4",

@@ -38,6 +38,7 @@ You will have to create an appengine project, and setup a bunch of things
 (like enabling IAM APIs, setting up the right DNS redirect, etc.). Once
 all of this is done, you can:
 
+    npm run build
     npm run deploy
 
 ## Next Steps
