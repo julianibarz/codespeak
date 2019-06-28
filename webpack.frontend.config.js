@@ -27,6 +27,7 @@ module.exports = {
     watchContentBase: true,
     compress: true,
     allowedHosts: [
+      'findfunny-tcmcnamara593013.codeanyapp.com',
       'nodejs-julianibarz499561.codeanyapp.com',
       'codespeak.julianibarz.com',
       'codespeak.appspot.com',

@@ -13,7 +13,9 @@ import {
 } from './socket.js';
 
 $(function() {
-  var socket = createSocket();
+  var julian_backend = 'https://nodejs-julianibarz499561.codeanyapp.com';
+  var tess_backend = 'https://findfunny-tcmcnamara593013.codeanyapp.com/';
+  var socket = createSocket(tess_backend);
   var speech = createSpeechRecognition(socket);
   var term = createTerminal(socket);
   createAuthentification(socket);

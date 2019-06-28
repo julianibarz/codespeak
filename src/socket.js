@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
-export function createSocket() {
-  var socket = io.connect('https://nodejs-julianibarz499561.codeanyapp.com', {secure: true});
+export function createSocket(backend) {
+  var socket = io.connect(backend, {secure: true});
   return socket;
 }
 

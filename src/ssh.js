@@ -53,7 +53,8 @@ function connectSSH(socket) {
     //host: 'host16.codeanyhost.com',
     //username: 'cabox',
     //port: 44166,
-    host: 'nodejs',
+    //host: 'nodejs',
+    host: 'findfunny',
     username: 'cabox',
     privateKey: require('fs').readFileSync(__dirname + '/id_rsa')
   });
