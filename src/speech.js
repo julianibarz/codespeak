@@ -14,28 +14,36 @@ export function createSpeechRecognition(socket) {
     var recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
+    recognition.maxAlternatives = 10;
     recognition.onresult = function(event) {
       var results = event.results
       if (typeof(results) === 'undefined') { //Something is wrong…
         recognition.stop();
         return;
       }
-      var transcript = '';
+      var transcripts = [];
+      for (var alt_index = 0; alt_index < recognition.maxAlternatives; ++alt_index) {
+        transcripts[alt_index] = '';
+      } 
       var isFinal = true;
       for (var i = event.resultIndex; i < event.results.length; ++i) {
         var result = results[i];
         if (!result.isFinal) {
           isFinal = false;
         }
-        var result_transcript = result[0].transcript;
-        transcript += result_transcript;
+        for (alt_index = 0; alt_index < result.length; ++alt_index) {
+          var result_transcript = result[alt_index].transcript;
+          transcripts[alt_index] += result_transcript;
+        }
       }
       if (isFinal) {
-        socket.emit('term_data', transcript);
-        console.log('recog: ' + transcript);
+        socket.emit('term_data', transcripts[0]);
+         for (alt_index = 0; alt_index < recognition.maxAlternatives; ++alt_index) {
+          console.log('recog[' + alt_index + '] = ' + transcripts[alt_index]);
+        } 
         interim_p.textContent = '';
       } else {
-        interim_p.textContent = transcript;
+        interim_p.textContent = transcripts[0];
       }
     };
   }
