@@ -17,8 +17,10 @@ export function createServerWithSockets(app, port) {
             audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        const user_id = payload.sub;
-        if (user_id == '103747622700379269791') {
+        const user_id = payload.sub; 
+        const julian_id = '103747622700379269791';
+        const tess_id = '115997013530718720322';      
+        if (user_id == julian_id || user_id == tess_id) {
           connectSSH(socket);
         } else {
           console.log('This is not me.');
