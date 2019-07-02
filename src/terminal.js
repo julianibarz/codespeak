@@ -26,6 +26,7 @@ export function createTerminal(socket) {
   term.on('key', function(key, ev) {
     const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey;
 
+    console.log('code: ' + ev.keyCode + ', key: ' + key);
     if (ev.keyCode === 13) {
       term.prompt();
     } else if (ev.keyCode === 8) {

@@ -16,7 +16,7 @@ export function createSpeechRecognition(socket) {
     recognition.interimResults = true;
     recognition.maxAlternatives = 10;
     recognition.onresult = function(event) {
-      var results = event.results
+      var results = event.results;
       if (typeof(results) === 'undefined') { //Something is wrong…
         recognition.stop();
         return;
@@ -37,7 +37,8 @@ export function createSpeechRecognition(socket) {
         }
       }
       if (isFinal) {
-        socket.emit('term_data', transcripts[0]);
+        var data = applyGrammar(transcripts[0]);
+        socket.emit('term_data', data);
          for (alt_index = 0; alt_index < recognition.maxAlternatives; ++alt_index) {
           console.log('recog[' + alt_index + '] = ' + transcripts[alt_index]);
         } 
@@ -60,4 +61,24 @@ export function createSpeechRecognition(socket) {
     }
     return;
   });
+}
+
+function applyGrammar(text) {
+  var out_text = String(text);
+  console.log('before: ' + text);
+  var keywords = {
+    'back': "\b",
+    'buck': "\b",
+    'escape': "\x1B",
+    'Escape': "\x1B"
+  };
+  for (var keyword in keywords) {
+    var replacement = keywords[keyword];
+    out_text  = out_text.replace(RegExp(" " + keyword + " ", 'g'), replacement);
+    out_text  = out_text.replace(RegExp(keyword + " ", 'g'), replacement);
+    out_text  = out_text.replace(RegExp(" " + keyword, 'g'), replacement);
+    if (out_text == keyword) out_text = replacement;
+  }
+  console.log('after: ' + out_text);
+  return out_text;
 }
