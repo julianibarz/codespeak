@@ -67,10 +67,20 @@ function applyGrammar(text) {
   var out_text = '';
   console.log('before: ' + text);
   var keywords = {
+    // Special characters.
     'back': "\b",
     'buck': "\b",
     'escape': "\x1B",
     'space': ' ',
+    'tab': "\t",
+    // Punctuations.
+    'coma': ',',
+    'open': '',
+    'close': '',
+    'colon': ':',
+    'semicolon': ';',
+    'dot': '.',
+    // Alphabet.
     'enter': "\n",
     'alfa': 'a',
     'alpha': 'a',
@@ -92,6 +102,7 @@ function applyGrammar(text) {
     'quebec': 'q',
     'romeo': 'r',
     'sierra': 's',
+    'ciara': 's',
     'tango': 't',
     'uniform': 'u',
     'victor': 'v',
@@ -99,6 +110,7 @@ function applyGrammar(text) {
     'x-ray': 'x',
     'yankee': 'y',
     'zulu': 'z',
+    // Numbers.
     'zero': '0',
     'one': '1',
     'two': '2',
@@ -110,12 +122,6 @@ function applyGrammar(text) {
     'eight': '8',
     'nine': '9',
     'ten': '10',
-    'coma': ',',
-    'open': '',
-    'close': '',
-    'colon': ':',
-    'semicolon': ';',
-    'dot': '.',
     '.': '.',
     '0': '0',
     '1': '1',
