@@ -40,7 +40,7 @@ export function createSpeechRecognition(socket) {
         var data = applyGrammar(transcripts[0]);
         socket.emit('term_data', data);
          for (alt_index = 0; alt_index < recognition.maxAlternatives; ++alt_index) {
-          console.log('recog[' + alt_index + '] = ' + transcripts[alt_index]);
+          console.log('recog[' + alt_index + '] = ' + JSON.stringify(transcripts[alt_index]));
         } 
         interim_p.textContent = '';
       } else {
@@ -64,21 +64,78 @@ export function createSpeechRecognition(socket) {
 }
 
 function applyGrammar(text) {
-  var out_text = String(text);
+  var out_text = '';
   console.log('before: ' + text);
   var keywords = {
     'back': "\b",
     'buck': "\b",
     'escape': "\x1B",
-    'Escape': "\x1B"
+    'space': ' ',
+    'enter': "\n",
+    'alfa': 'a',
+    'alpha': 'a',
+    'bravo': 'b',
+    'charlie': 'c',
+    'delta': 'd',
+    'echo': 'e',
+    'foxtrot': 'f',
+    'golf': 'g',
+    'hotel': 'h',
+    'india': 'i',
+    'juliett': 'j',
+    'kilo': 'k',
+    'lima': 'l',
+    'mike': 'm',
+    'november': 'n',
+    'oscar': 'o',
+    'papa': 'p',
+    'quebec': 'q',
+    'romeo': 'r',
+    'sierra': 's',
+    'tango': 't',
+    'uniform': 'u',
+    'victor': 'v',
+    'whiskey': 'w',
+    'x-ray': 'x',
+    'yankee': 'y',
+    'zulu': 'z',
+    'zero': '0',
+    'one': '1',
+    'two': '2',
+    'three': '3',
+    'four': '4',
+    'five': '5',
+    'six': '6',
+    'seven': '7',
+    'eight': '8',
+    'nine': '9',
+    'ten': '10',
+    'coma': ',',
+    'open': '',
+    'close': '',
+    'colon': ':',
+    'semicolon': ';',
+    'dot': '.',
+    '.': '.',
+    '0': '0',
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5',
+    '6': '6',
+    '7': '7',
+    '8': '8',
+    '9': '9'
   };
-  for (var keyword in keywords) {
-    var replacement = keywords[keyword];
-    out_text  = out_text.replace(RegExp(" " + keyword + " ", 'g'), replacement);
-    out_text  = out_text.replace(RegExp(keyword + " ", 'g'), replacement);
-    out_text  = out_text.replace(RegExp(" " + keyword, 'g'), replacement);
-    if (out_text == keyword) out_text = replacement;
-  }
+  if (text == "\n") return text;
+  var words = text.toLowerCase().split(' ');
+  console.log('words: ' + words);
+  words.forEach(word => {
+    if (word in keywords) {
+      out_text += keywords[word];
+    }
+  });    
   console.log('after: ' + out_text);
   return out_text;
 }
