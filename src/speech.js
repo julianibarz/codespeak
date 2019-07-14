@@ -1,5 +1,6 @@
 export function createSpeechRecognition(socket) {
   var recognizing = false;
+  var restricted_grammar = new RestrictedGrammar();
   function upgrade() {
     $(document.body).empty();
     var para = document.createElement('p');
@@ -37,7 +38,7 @@ export function createSpeechRecognition(socket) {
         }
       }
       if (isFinal) {
-        var data = applyGrammar(transcripts[0]);
+        var data = restricted_grammar.applyGrammar(transcripts[0]);
         socket.emit('term_data', data);
          for (alt_index = 0; alt_index < recognition.maxAlternatives; ++alt_index) {
           console.log('recog[' + alt_index + '] = ' + JSON.stringify(transcripts[alt_index]));
@@ -63,25 +64,71 @@ export function createSpeechRecognition(socket) {
   });
 }
 
-function applyGrammar(text) {
-  var out_text = '';
-  console.log('before: ' + text);
-  var keywords = {
+function RestrictedGrammar() {
+  this.keywords = {
     // Special characters.
     'back': "\b",
     'buck': "\b",
     'escape': "\x1B",
     'space': ' ',
     'tab': "\t",
+    'table': "\t",
+    'enter': "\n",
+    '\n': "\n",
     // Punctuations.
     'coma': ',',
+    'kuma': ',',
     'open': '',
     'close': '',
     'colon': ':',
+    'collin': ':',
+    'colin': ':',
     'semicolon': ';',
     'dot': '.',
+    'quote': '\'',
+    'quotes': '\'',
+    'cool': '\'',
+    'backslash': '\\',  
+    'slash': '/',  
+    'flash': '/',
+    'equal': '=',
+    'underscore': '_',
+    'inferior': '<',
+    'superior': '>',
+    'plus': '+',
+    'minus': '-',
+    // Vim commands.
+    'dollar': '$',
+    'hat': '^', 
+    'hot': '^', 
     // Alphabet.
-    'enter': "\n",
+    'a': 'a',
+    'b': 'b',
+    'c': 'c',
+    'd': 'd',
+    'e': 'e',
+    'f': 'f',
+    'g': 'g',
+    'h': 'h',
+    'i': 'i',  
+    'j': 'j',  
+    'k': 'k',  
+    'l': 'l',  
+    'm': 'm',  
+    'n': 'n',  
+    'o': 'o',  
+    'p': 'p',  
+    'q': 'q',  
+    'r': 'r',  
+    's': 's',  
+    't': 't',  
+    'u': 'u',  
+    'v': 'v',  
+    'w': 'w',  
+    'x': 'x',  
+    'y': 'y',  
+    'z': 'z',  
+    // NATO Alphabet.
     'alfa': 'a',
     'alpha': 'a',
     'bravo': 'b',
@@ -93,11 +140,13 @@ function applyGrammar(text) {
     'hotel': 'h',
     'india': 'i',
     'juliett': 'j',
+    'juliet': 'j',  
     'kilo': 'k',
     'lima': 'l',
     'mike': 'm',
     'november': 'n',
     'oscar': 'o',
+    'costco': 'o',
     'papa': 'p',
     'quebec': 'q',
     'romeo': 'r',
@@ -134,14 +183,31 @@ function applyGrammar(text) {
     '8': '8',
     '9': '9'
   };
+  this.qualifiers = [
+    'open',
+    'close',
+  ];
+  this.qualifiers = {
+    'parenthesis': ['(', ')'],
+    'bracket': ['[', ']'],
+    'braces': ['{', '}'],
+  }
+}
+
+RestrictedGrammar.prototype.applyGrammar = function(text) {
+  var out_text = '';
+  console.log('before: ' + text);
   if (text == "\n") return text;
   var words = text.toLowerCase().split(' ');
   console.log('words: ' + words);
-  words.forEach(word => {
-    if (word in keywords) {
-      out_text += keywords[word];
+  for (var word_index = 0; word_index < words.length; ++word_index) { 
+    var word = words[word_index];
+    if (word in this.qualifiers) {
     }
-  });    
+    if (word in this.keywords) {
+      out_text += this.keywords[word];
+    }
+  }
   console.log('after: ' + out_text);
   return out_text;
-}
+};
