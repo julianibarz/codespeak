@@ -183,15 +183,15 @@ function RestrictedGrammar() {
     '8': '8',
     '9': '9'
   };
-  this.qualifiers = [
-    'open',
-    'close',
-  ];
-  this.qualifiers = {
+  this.delimiters = {
+    'open': 0,
+    'close': 1, 
+  };
+  this.delimiters_token = {
     'parenthesis': ['(', ')'],
     'bracket': ['[', ']'],
     'braces': ['{', '}'],
-  }
+  };
 }
 
 RestrictedGrammar.prototype.applyGrammar = function(text) {
@@ -202,7 +202,12 @@ RestrictedGrammar.prototype.applyGrammar = function(text) {
   console.log('words: ' + words);
   for (var word_index = 0; word_index < words.length; ++word_index) { 
     var word = words[word_index];
-    if (word in this.qualifiers) {
+    if (word in this.delimiters && word_index + 1 < words.length) {
+      var token = words[word_index + 1];
+      if (token in this.delimiters_token) {
+        const index = this.delimiters[word];
+        out_text += this.delimiters_token[token][index];
+      }
     }
     if (word in this.keywords) {
       out_text += this.keywords[word];
