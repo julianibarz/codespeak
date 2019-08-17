@@ -189,10 +189,31 @@ function RestrictedGrammar() {
   };
   this.delimiters_token = {
     'parenthesis': ['(', ')'],
+    'parentheses': ['(', ')'],
     'bracket': ['[', ']'],
+    'brackets': ['[', ']'],
     'braces': ['{', '}'],
   };
+  this.modifiers = { 
+    'ctrl': false,
+    'control': false,
+    'shift': false,
+    'alt': false,
+  };
 }
+
+var applyModifiers = function(modifiers, characters) {
+  if (modifiers.shift) {
+    characters.toUpperCase();
+  }
+  if (modifiers.ctrl || modifiers.control) {
+    characters[0] = ''.fromCharCode(characters.charCodeAt(0) & 37);
+  }
+  // Reset modifiers.
+  for (var key in modifiers) {
+    modifiers[key] = false;
+  }
+};
 
 RestrictedGrammar.prototype.applyGrammar = function(text) {
   var out_text = '';
@@ -200,17 +221,20 @@ RestrictedGrammar.prototype.applyGrammar = function(text) {
   if (text == "\n") return text;
   var words = text.toLowerCase().split(' ');
   console.log('words: ' + words);
+  
   for (var word_index = 0; word_index < words.length; ++word_index) { 
     var word = words[word_index];
-    if (word in this.delimiters && word_index + 1 < words.length) {
+    if (word in this.keywords) {
+      out_text += applyModifiers(this.keywords[word]);
+    } else if (word in this.delimiters && word_index + 1 < words.length) {
       var token = words[word_index + 1];
       if (token in this.delimiters_token) {
         const index = this.delimiters[word];
         out_text += this.delimiters_token[token][index];
+        word_index += 1;
       }
-    }
-    if (word in this.keywords) {
-      out_text += this.keywords[word];
+    } else if (word in this.modifiers) {
+      this.modifiers[word] = true;
     }
   }
   console.log('after: ' + out_text);
